@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Machine Failure Prediction</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #343a40; /* Bootstrap's 'dark' color */
+            color: #f8f9fa; /* Bootstrap's 'light' color */
+        }
+        .form-control {
+            background-color: #495057; /* Bootstrap's 'secondary' color */
+            color: #f8f9fa; /* Bootstrap's 'light' color */
+        }
+        .btn-predict {
+            font-size: 20px;
+            padding: 10px 30px;
+            display: block;
+            margin: 0 auto;
+            transition: 1s all; /* Animation */
+        }
+        .shake {
+            animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+            transform: translate3d(0, 0, 0);
+            backface-visibility: hidden;
+            perspective: 1000px;
+        }
+        @keyframes shake {
+            10%, 90% {
+                transform: translate3d(-1px, 0, 0);
+            }
+            20%, 80% {
+                transform: translate3d(2px, 0, 0);
+            }
+            30%, 50%, 70% {
+                transform: translate3d(-4px, 0, 0);
+            }
+            40%, 60% {
+                transform: translate3d(4px, 0, 0);
+            }
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('form').on('submit', function(e) {
+                var hasEmptyFields = $('input[type="text"]').filter(function() {
+                    return $.trim(this.value) == "";
+                }).length > 0;
+
+                if (hasEmptyFields) {
+                    e.preventDefault();
+                    $('.btn-predict').addClass('shake');
+
+                    setTimeout(function() {
+                        $('.btn-predict').removeClass('shake');
+                    }, 820);
+
+                    alert("Lütfen tüm alanları doldurunuz.");
+                }
+            });
+        });
+    </script>
+        <script>
+        $(document).ready(function() {
+            $('form').on('submit', function(e) {
+                var hasEmptyFields = $('input[type="text"]').filter(function() {
+                    return $.trim(this.value) == "";
+                }).length > 0;
+
+                var hasNonNumericFields = $('input[type="text"]').filter(function() {
+                    return isNaN(this.value);
+                }).length > 0;
+
+                if (hasEmptyFields) {
+                    e.preventDefault();
+                    $('.btn-predict').addClass('shake');
+
+                    setTimeout(function() {
+                        $('.btn-predict').removeClass('shake');
+                    }, 820);
+
+                    alert("Lütfen tüm alanları doldurunuz.");
+                } else if (hasNonNumericFields) {
+                    e.preventDefault();
+                    $('.btn-predict').addClass('shake');
+
+                    setTimeout(function() {
+                        $('.btn-predict').removeClass('shake');
+                    }, 820);
+
+                    alert("Lütfen sadece sayısal değerler giriniz.");
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mt-4">Machine Failure Prediction</h1>
+
+        <form method="POST" action="/" class="mt-5">
+            <div class="form-group">
+                <label for="attribute1">Air temperature [K]</label>
+                <input type="text" id="attribute1" name="attribute1" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="attribute2">Process temperature [K]</label>
+                <input type="text" id="attribute2" name="attribute2" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="attribute3">Rotational speed [rpm]</label>
+                <input type="text" id="attribute3" name="attribute3" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="attribute4">Torque [Nm]</label>
+                <input type="text" id="attribute4" name="attribute4" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="attribute5">Tool wear [min]</label>
+                <input type="text" id="attribute5" name="attribute5" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="attributeSelection">Type</label>
+                <select id="attributeSelection" name="attributeSelection" class="form-control">
+                    <option value="H">H</option>
+                    <option value="L">L</option>
+                    <option value="M">M</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg btn-predict">Predict</button>
+        </form>
+
+        {% if prediction is not none %}
+            <h2 class="text-center mt-4">Predicted Class: <span class="badge badge-info">{{ prediction }}</span></h2>
+        {% endif %}
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>
+ al düzelt
